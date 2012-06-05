@@ -19,10 +19,7 @@ public class WordFrequency extends PApplet {
 
         PApplet.main(new String[]{"TwitterWords.WordFrequency"});
     }
-    int noWords = 0;
-    int noSpaces = 0;
     PFont font, font1, font2, font3, font4;
-    String[] lines;
     String[] stop_words;
     int twitterWordsSize;
     int previousWordsSize; //used to calculate last words size to form bubble
@@ -36,7 +33,7 @@ public class WordFrequency extends PApplet {
     int maximumBubbles = 49;
     int bubblesPlotted = 0;
     int wordColor;
-    Ball[] balls = new Ball[0];
+    WordBubble[] bubbles = new WordBubble[0];
     float gravity = 1.40f;
     float bounce = 0.85f;
     float friction = 0.90f;
@@ -52,7 +49,6 @@ public class WordFrequency extends PApplet {
     FullScreen fs;
     Dimension scrnsize;
     LocationStreamer loc;
-    int last_tweetCounter = 0;
     ArrayList<String> alreadySeen;
     int lastCount = 0;
 
@@ -60,9 +56,9 @@ public class WordFrequency extends PApplet {
     public void setup() {
 
         //gets starting position for motion sensors - will change when moved
-        currentSMSx = sms.Unimotion.getSMSX();
-        currentSMSy = sms.Unimotion.getSMSY();
-        currentSMSz = sms.Unimotion.getSMSZ();
+       // currentSMSx = sms.Unimotion.getSMSX();
+        //currentSMSy = sms.Unimotion.getSMSY();
+       // currentSMSz = sms.Unimotion.getSMSZ();
 
 
         double[][] locations = new double[2][2];
@@ -162,9 +158,9 @@ public class WordFrequency extends PApplet {
 
         int wobble = random.nextInt(chance);
         if (wobble == 1) {
-            for (int i = 0; i < balls.length; i++) {
-                balls[i].x = random(balls[i].radius + spaceLeft, width - spaceRight - balls[i].radius);
-                balls[i].y = random(balls[i].radius + spaceUp, height - spaceDown - balls[i].radius);
+            for (int i = 0; i < bubbles.length; i++) {
+                bubbles[i].x = random(bubbles[i].radius + spaceLeft, width - spaceRight - bubbles[i].radius);
+                bubbles[i].y = random(bubbles[i].radius + spaceUp, height - spaceDown - bubbles[i].radius);
             }
         }
 
@@ -176,15 +172,15 @@ public class WordFrequency extends PApplet {
      */
     void updateBubblesDisplay() {
         for (int i = maximumBubbles; i >= 0; i--) {
-            if (i < balls.length) {
+            if (i < bubbles.length) {
                 if (motion_sensor) {
-                    balls[i].fall();
+                    bubbles[i].fall();
                 }
-                balls[i].bounce();
-                balls[i].collide();
-                balls[i].move();
-                balls[i].above();
-                balls[i].display();
+                bubbles[i].bounce();
+                bubbles[i].collide();
+                bubbles[i].move();
+                bubbles[i].above();
+                bubbles[i].display();
             }
         }
     }
@@ -192,9 +188,7 @@ public class WordFrequency extends PApplet {
     /*
      * Sets raduius and are of word bubbles, based on the amount of times the
      * word has occured; the more times the word has been mentioned the bigger
-     * the word bubble will be TODO: this still assumes that there are only 2
-     * characters per bubble consider adjusting the area such that it takes in
-     * to account longer words
+     * the word bubble will be 
      */
     void updateBubbles() {
 
@@ -202,17 +196,17 @@ public class WordFrequency extends PApplet {
         amountOfWords = 0;
         bubblesPlotted = 0;
         for (int i = maximumBubbles; i >= 0; i--) {
-            if (i < balls.length) {
-                amountOfWords += balls[i].occurences;
+            if (i < bubbles.length) {
+                amountOfWords += bubbles[i].occurences;
                 bubblesPlotted++;
             }
         }
 
         calculateBubbleSize();
-        for (int i = 0; i < balls.length; i++) {
-            float bestArea = (totalArea * balls[i].occurences) / amountOfWords;
-            balls[i].area = bestArea;
-            balls[i].radius = sqrt(((bestArea) / PI));
+        for (int i = 0; i < bubbles.length; i++) {
+            float bestArea = (totalArea * bubbles[i].occurences) / amountOfWords;
+            bubbles[i].area = bestArea;
+            bubbles[i].radius = sqrt(((bestArea) / PI));
         }
     }
 
@@ -255,7 +249,7 @@ public class WordFrequency extends PApplet {
 
             lastCount = loc.statusCount();
         }
-        noWords++;
+       
         // refresh info order 
         orderArray();
     }
@@ -276,7 +270,7 @@ public class WordFrequency extends PApplet {
         textFont(font1, 25);
         textAlign(LEFT);
         fill(120);
-        text(str(bubblesPlotted) + " / " + str(balls.length), 30, height - 30);
+        text(str(bubblesPlotted) + " / " + str(bubbles.length), 30, height - 30);
 
         textFont(font2, 18);
         textAlign(RIGHT);
@@ -307,10 +301,10 @@ public class WordFrequency extends PApplet {
         //checks to see if word already exists in ball array, if it does increments it's occurences by one
         //else, creates a new ball in the array containing that word 
         int wordFound = 0;
-        for (int i = 0; i < balls.length; i++) {
-            if (balls[i].name.equals(newWord) == true) { // if you find the most one occurrence kp
+        for (int i = 0; i < bubbles.length; i++) {
+            if (bubbles[i].name.equals(newWord) == true) { // if you find the most one occurrence kp
                 wordFound = 1;
-                balls[i].occurences++;
+                bubbles[i].occurences++;
             }
             if (wordFound == 1) {
                 break;
@@ -331,13 +325,13 @@ public class WordFrequency extends PApplet {
 
         calculateBubbleSize();
         float myArea;
-        if (balls.length > 0) {
-            myArea = totalArea / balls.length;
+        if (bubbles.length > 0) {
+            myArea = totalArea / bubbles.length;
         } else {
             myArea = totalArea;
         }
-        Ball[] tempBall = append(balls, myArea, newx, 1);
-        balls = tempBall;
+        WordBubble[] tempBall = append(bubbles, myArea, newx, 1);
+        bubbles = tempBall;
 
     }
 
@@ -347,10 +341,10 @@ public class WordFrequency extends PApplet {
      */
     void orderArray() {
 
-        Ball[] tempOccurences = new Ball[balls.length];
-        System.arraycopy(balls, 0, tempOccurences, 0, balls.length);
+        WordBubble[] tempOccurences = new WordBubble[bubbles.length];
+        System.arraycopy(bubbles, 0, tempOccurences, 0, bubbles.length);
 
-        Ball temp;
+        WordBubble temp;
         int i, j;
         for (i = tempOccurences.length - 1; i >= 0; i--) {
             for (j = 0; j < i; j++) {
@@ -361,7 +355,7 @@ public class WordFrequency extends PApplet {
                 }
             }
         }
-        balls = tempOccurences;
+        bubbles = tempOccurences;
     }
 
     /*
@@ -500,9 +494,9 @@ public class WordFrequency extends PApplet {
 
 
         if (key == 'r' || key == 'R') { // randomly re-arrange balls
-            for (int i = 0; i < balls.length; i++) {
-                balls[i].x = random(balls[i].radius + spaceLeft, width - spaceRight - balls[i].radius);
-                balls[i].y = random(balls[i].radius + spaceUp, height - spaceDown - balls[i].radius);
+            for (int i = 0; i < bubbles.length; i++) {
+                bubbles[i].x = random(bubbles[i].radius + spaceLeft, width - spaceRight - bubbles[i].radius);
+                bubbles[i].y = random(bubbles[i].radius + spaceUp, height - spaceDown - bubbles[i].radius);
             }
         }
     }
@@ -526,7 +520,7 @@ public class WordFrequency extends PApplet {
      * information about it's position. Class also controls bubbles interactions
      * with other bubbles (for example collision) and it's motion.
      */
-    class Ball {
+    class WordBubble {
 
         float radius;
         float m;
@@ -557,7 +551,7 @@ public class WordFrequency extends PApplet {
          * @param myName name of bubble, is also the text that is displayed
          * @param myOccurences amount of times word has been used
          */
-        Ball(int myID, float myArea, String myName, int myOccurences) {
+        WordBubble(int myID, float myArea, String myName, int myOccurences) {
 
             area = myArea;
             radius = sqrt(area / PI);
@@ -631,12 +625,12 @@ public class WordFrequency extends PApplet {
 
             for (int i = maximumBubbles; i >= 0; i--) {
 
-                if (i < balls.length) {
+                if (i < bubbles.length) {
 
-                    float X1 = balls[i].x;
-                    float Y1 = balls[i].y;
-                    float R1 = balls[i].radius;
-                    float M = balls[i].m;
+                    float X1 = bubbles[i].x;
+                    float Y1 = bubbles[i].y;
+                    float R1 = bubbles[i].radius;
+                    float M = bubbles[i].m;
 
                     float deltax = X1 - x;
                     float deltay = Y1 - y;
@@ -698,9 +692,9 @@ public class WordFrequency extends PApplet {
 
             int myWordColor = wordColor;
 
-            float A = balls[0].occurences;                        // maximo original
+            float A = bubbles[0].occurences;                        // maximo original
             float C = occurences;                                 // valor original
-            float B = balls[bubblesPlotted - 1].occurences;    // minimo original
+            float B = bubbles[bubblesPlotted - 1].occurences;    // minimo original
             float D;                                               // nuevo maximo
             float E;                                               // nuevo minimo
 
@@ -733,7 +727,6 @@ public class WordFrequency extends PApplet {
                 text(name, x, y + size / 3);
             }
 
-            //if ( show_info || estamos_encima ) {
             if (show_info) {
                 float tamanio1 = radius * 0.3f;
                 textFont(font, tamanio1);
@@ -794,10 +787,10 @@ public class WordFrequency extends PApplet {
      * bubble added
      */
 
-    Ball[] append(Ball t[], float ka, String NOMBRE, int OCURR) {
-        Ball temp[] = new Ball[t.length + 1];
+    WordBubble[] append(WordBubble t[], float myArea, String myName, int myOccurences) {
+        WordBubble temp[] = new WordBubble[t.length + 1];
         System.arraycopy(t, 0, temp, 0, t.length);
-        temp[t.length] = new Ball(t.length, ka, NOMBRE, OCURR);
+        temp[t.length] = new WordBubble(t.length, myArea, myName, myOccurences);
         return temp;
     }
     Keys keyboard = new Keys();
