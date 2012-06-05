@@ -55,7 +55,7 @@ public class WordFrequency extends PApplet {
     @Override
     public void setup() {
 
-        //gets starting position for motion sensors - will change when moved
+        //gets starting position for motion sensors - will change when moved all SMS commented out
        // currentSMSx = sms.Unimotion.getSMSX();
         //currentSMSy = sms.Unimotion.getSMSY();
        // currentSMSz = sms.Unimotion.getSMSZ();
@@ -128,9 +128,9 @@ public class WordFrequency extends PApplet {
 
         //gets current motion sensor readings
 
-        currentSMSx = sms.Unimotion.getSMSX();
-        currentSMSy = sms.Unimotion.getSMSY();
-        currentSMSz = sms.Unimotion.getSMSZ();
+        //currentSMSx = sms.Unimotion.getSMSX();
+        //currentSMSy = sms.Unimotion.getSMSY();
+        //currentSMSz = sms.Unimotion.getSMSZ();
 
 
         //sets word color to gold (defined in setup)
@@ -484,8 +484,8 @@ public class WordFrequency extends PApplet {
         }
         if (key == 'm' || key == 'M') {  //activate motion sensor balls move depending on position of device
             if (!motion_sensor) {
-                startSMSx = sms.Unimotion.getSMSX();
-                startSMSy = sms.Unimotion.getSMSY();
+                //startSMSx = sms.Unimotion.getSMSX();
+                //startSMSy = sms.Unimotion.getSMSY();
                 motion_sensor = true;
             } else {
                 motion_sensor = false;
