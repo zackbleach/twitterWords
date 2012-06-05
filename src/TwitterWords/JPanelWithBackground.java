@@ -34,11 +34,11 @@ public class JPanelWithBackground extends JPanel {
         backgroundImage = ImageIO.read(new File(fileName));
 
     }
-
+    
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        // Draw the background image.
+        // Draw background image.
         g.drawImage(backgroundImage, 0, 0, null);
     }
 }

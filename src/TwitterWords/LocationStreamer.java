@@ -27,7 +27,6 @@ public class LocationStreamer extends StatusAdapter implements Runnable{
     private FilterQuery query;
     public ArrayList<String> statuses;
     
-
     /*
      * Constructs a new location streamer and overrides onStatus method such that
      * each time a status is collected it is added to the statuses arrayList.
