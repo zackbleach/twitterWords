@@ -7,7 +7,7 @@ import java.awt.*;
 
 
 /**
- *
+ *removed sms library 
  */
 public class WordFrequency extends PApplet {
 
