@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ivy-module version="2.0">
-    <info organisation="TwitterWords" module="TwitterWords" revision="1.0" status="integration" publication="20120617185004"/>
+    <info organisation="TwitterWords" module="TwitterWords" revision="1.0" status="integration" publication="20120617190636"/>
     <configurations>
         <conf name="compile"/>
         <conf name="runtime"/>
