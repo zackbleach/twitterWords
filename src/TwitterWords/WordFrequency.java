@@ -1,5 +1,7 @@
 package TwitterWords;
 
+
+
 import processing.core.*;
 import java.util.*;
 import fullscreen.*;
@@ -8,6 +10,7 @@ import java.awt.*;
 
 /**
  *removed sms library 
+ *changed java back from -d32 32bit mode because of removal of sms
  */
 public class WordFrequency extends PApplet {
 
@@ -221,12 +224,11 @@ public class WordFrequency extends PApplet {
         String tweetWord = "";
         //BEGIN COMMENTING OUT 
         if (lastCount < loc.statusCount()) { //if more tweets have been stored in the twitter streamer
-            ArrayList<String> alreadySeen = new ArrayList<String>(); //count each word from tweet only once (avoids manipulation from tweets which repear the same word)
+            ArrayList<String> myAlreadySeen = new ArrayList<String>(); //count each word from tweet only once (avoids manipulation from tweets which repear the same word)
             //SHAKE WHEN NEW TWEET COMES IN
             shakeRandom(1);
 
-            ArrayList<String> tw = new ArrayList<String>();
-            tw = toWordsTwitter(loc.getStatus(lastCount)); //tokenize latest tweet
+            ArrayList<String> tw = toWordsTwitter(loc.getStatus(lastCount)); //tokenize latest tweet
 
             //for each word in the tweet, if it's a stopword remove, otherwise keep anything that is a word or an emoticon
             boolean isStopword = false;
@@ -238,8 +240,8 @@ public class WordFrequency extends PApplet {
                         break;
                     }
                 }
-                if (!isStopword && !alreadySeen.contains(w)) {
-                    alreadySeen.add(w);
+                if (!isStopword && !myAlreadySeen.contains(w)) {
+                    myAlreadySeen.add(w);
                     tweetWord = w;
                     addWord(w);
                     isStopword = false;
@@ -737,7 +739,7 @@ public class WordFrequency extends PApplet {
             }
             if (last_tweet) {
 
-                String display = "";
+                String display;
                 String newDisplay = "";
 
 

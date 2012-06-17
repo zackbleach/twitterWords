@@ -1,6 +1,8 @@
 package TwitterWords;
 
 
+
+
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -13,6 +15,8 @@ import javax.swing.BoxLayout;
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
+ * 
+ * 
  */
 
 /**

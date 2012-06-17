@@ -1,12 +1,7 @@
 package TwitterWords;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.net.URI;
+
+
 import java.util.ArrayList;
 import javax.swing.*;
 import twitter4j.*;

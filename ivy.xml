@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="2.0">
+    <info module="TwitterWords" organisation="TwitterWords" revision="1.0"/>
+    <configurations>
+        <conf name="compile"/>
+        <conf name="runtime"/>
+        <conf name="compile-test"/>
+        <conf name="runtime-test"/>
+    </configurations>
+    <dependencies>
+        <dependency org="net.databinder.spde" name="processing-core" rev="1.0.3__0.1.3" conf="compile->*" />
+        <dependency org="org.twitter4j" name="twitter4j-core" rev="[2.2,)" conf="compile->*" />
+        <dependency org="org.twitter4j" name="twitter4j-stream" rev="2.2.5" conf="compile->*" />
+        <dependency org="org.twitter4j" name="twitter4j" rev="2.2.5" conf="compile->*" />
+    </dependencies>
+</ivy-module>
+
+
+
+    
